@@ -6,7 +6,7 @@ import axios from "axios";
 
 import "./chat.styles.scss";
 
-const apiUrl = "https://localhost:3001";
+const apiUrl = "http://localhost:3001";
 
 const ChatView = () => {
   const [message, setMessage] = useState("");
