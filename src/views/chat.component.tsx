@@ -1,15 +1,23 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import InputGroup from "react-bootstrap/InputGroup";
 import FormControl from "react-bootstrap/FormControl";
 import Button from "react-bootstrap/Button";
 import axios from "axios";
+import io from "socket.io-client";
 
 import "./chat.styles.scss";
 
 const apiUrl = "http://localhost:3001";
+let socket: SocketIOClient.Socket;
 
 const ChatView = () => {
   const [message, setMessage] = useState("");
+
+  // Connect to websockets
+  useEffect(() => {
+    socket = io(apiUrl);
+    socket.emit("join", {});
+  }, []);
 
   function onSendMessage() {
     setMessage("");
