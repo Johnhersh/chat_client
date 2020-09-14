@@ -14,14 +14,19 @@ interface ChatProps {
   activeUserName: string;
 }
 
-const ChatView: FunctionComponent<ChatProps> = () => {
+const ChatView: FunctionComponent<ChatProps> = ({ activeUserName }) => {
   const [message, setMessage] = useState("");
 
   // Connect to websockets
   useEffect(() => {
     socket = io(apiUrl);
-    socket.emit("join", {});
-  }, []);
+    socket.emit("join", activeUserName);
+
+    return function cleanup() {
+      socket.emit("disconnect");
+      socket.off("disconnect");
+    };
+  }, [activeUserName]);
 
   function onSendMessage() {
     setMessage("");
