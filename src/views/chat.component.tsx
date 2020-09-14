@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, FunctionComponent } from "react";
 import InputGroup from "react-bootstrap/InputGroup";
 import FormControl from "react-bootstrap/FormControl";
 import Button from "react-bootstrap/Button";
-import axios from "axios";
+// import axios from "axios";
 import io from "socket.io-client";
 
 import "./chat.styles.scss";
@@ -10,7 +10,11 @@ import "./chat.styles.scss";
 const apiUrl = "http://localhost:3001";
 let socket: SocketIOClient.Socket;
 
-const ChatView = () => {
+interface ChatProps {
+  activeUserName: string;
+}
+
+const ChatView: FunctionComponent<ChatProps> = () => {
   const [message, setMessage] = useState("");
 
   // Connect to websockets
@@ -21,10 +25,10 @@ const ChatView = () => {
 
   function onSendMessage() {
     setMessage("");
-    axios.get(apiUrl).then((repos) => {
-      const allRepos = repos.data;
-      console.log(allRepos);
-    });
+    // axios.get(apiUrl).then((repos) => {
+    //   const allRepos = repos.data;
+    //   console.log(allRepos);
+    // });
   }
 
   function onMessageChange(event: React.ChangeEvent<HTMLInputElement>) {
