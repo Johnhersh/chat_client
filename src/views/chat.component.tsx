@@ -4,6 +4,7 @@ import FormControl from "react-bootstrap/FormControl";
 import Button from "react-bootstrap/Button";
 import ListGroup from "react-bootstrap/ListGroup";
 import io from "socket.io-client";
+import axios from "axios";
 
 import "./chat.styles.scss";
 
@@ -16,11 +17,17 @@ interface ChatProps {
 
 const ChatView: FunctionComponent<ChatProps> = ({ activeUserName }) => {
   const [message, setMessage] = useState("");
+  const [activeUsers, setActiveUsers] = useState<Array<string>>([]);
 
   // Connect to websockets
   useEffect(() => {
     socket = io(apiUrl);
-    socket.emit("join", activeUserName);
+    socket.emit("join", activeUserName, () => {
+      axios.get(`${apiUrl}/getActiveUsersList`).then((response) => {
+        const activeUsers = response.data;
+        setActiveUsers(activeUsers);
+      });
+    });
 
     return function cleanup() {
       socket.emit("disconnect");
@@ -30,10 +37,6 @@ const ChatView: FunctionComponent<ChatProps> = ({ activeUserName }) => {
 
   function onSendMessage() {
     setMessage("");
-    // axios.get(apiUrl).then((repos) => {
-    //   const allRepos = repos.data;
-    //   console.log(allRepos);
-    // });
   }
 
   function onMessageChange(event: React.ChangeEvent<HTMLInputElement>) {
@@ -46,8 +49,9 @@ const ChatView: FunctionComponent<ChatProps> = ({ activeUserName }) => {
         <div className="messagesContainer" />
         <div className="activeUserListContainer">
           <ListGroup variant="flush">
-            <ListGroup.Item variant="dark">John</ListGroup.Item>
-            <ListGroup.Item variant="dark">Adam</ListGroup.Item>
+            {activeUsers.map((activeUser) => {
+              return <ListGroup.Item variant="dark">{activeUser}</ListGroup.Item>;
+            })}
           </ListGroup>
         </div>
       </div>
