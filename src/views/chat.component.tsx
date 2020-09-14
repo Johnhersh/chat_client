@@ -2,7 +2,7 @@ import React, { useState, useEffect, FunctionComponent } from "react";
 import InputGroup from "react-bootstrap/InputGroup";
 import FormControl from "react-bootstrap/FormControl";
 import Button from "react-bootstrap/Button";
-// import axios from "axios";
+import ListGroup from "react-bootstrap/ListGroup";
 import io from "socket.io-client";
 
 import "./chat.styles.scss";
@@ -42,7 +42,15 @@ const ChatView: FunctionComponent<ChatProps> = ({ activeUserName }) => {
 
   return (
     <div className="chatViewOuterContainer">
-      <div className="messagesContainer"></div>
+      <div className="chatViewInnerContainer">
+        <div className="messagesContainer" />
+        <div className="activeUserListContainer">
+          <ListGroup variant="flush">
+            <ListGroup.Item variant="dark">John</ListGroup.Item>
+            <ListGroup.Item variant="dark">Adam</ListGroup.Item>
+          </ListGroup>
+        </div>
+      </div>
       <div className="inputContainer">
         <InputGroup className="mb-0">
           <FormControl
