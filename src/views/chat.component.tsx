@@ -22,7 +22,7 @@ const ChatView: FunctionComponent<ChatProps> = ({ activeUserName }) => {
   const [message, setMessage] = useState("");
   const [activeUsers, setActiveUsers] = useState<Array<string>>([]);
 
-  // Doing this here so we only establish a connection to the server once
+  /** Initial websocket connection */
   useEffect(() => {
     socket = io(apiUrl);
     return function cleanup() {
@@ -35,7 +35,7 @@ const ChatView: FunctionComponent<ChatProps> = ({ activeUserName }) => {
     };
   }, []);
 
-  // Connect to websockets
+  /** Join the chat */
   useEffect(() => {
     if (!isLoggedIn) {
       socket.emit("join", activeUserName, () => {
@@ -49,6 +49,22 @@ const ChatView: FunctionComponent<ChatProps> = ({ activeUserName }) => {
       });
     }
 
+    socket.on("disconnect", (reason: string) => {
+      if (reason === "transport close") {
+        console.log("Server shut down");
+        setShouldDisconnect(true);
+      }
+    });
+  }, [isLoggedIn, activeUserName]);
+
+  /** users join/leave the chat */
+  useEffect(() => {
+    socket.on("user_joined", (username: string) => {
+      let newUsersList = [...activeUsers, username];
+
+      setActiveUsers(newUsersList);
+    });
+
     socket.on("user_left", (username: string) => {
       console.log(`User left: ${username}`);
       let newUsersList = activeUsers;
@@ -59,34 +75,9 @@ const ChatView: FunctionComponent<ChatProps> = ({ activeUserName }) => {
       }
       setActiveUsers(newUsersList);
     });
+  }, [activeUsers]);
 
-    socket.on("user_joined", (username: string) => {
-      let newUsersList = [...activeUsers, username];
-
-      console.log("new users list:");
-      console.log(activeUsers);
-      console.log(newUsersList);
-
-      setActiveUsers(newUsersList);
-    });
-
-    socket.on("disconnect", (reason: string) => {
-      if (reason === "transport close") {
-        console.log("Server shut down");
-        setShouldDisconnect(true);
-      }
-    });
-
-    return function cleanup() {
-      // console.log("Cleaning up!");
-      // socket.emit("disconnect");
-      // socket.off("disconnect");
-      // socket.off("user_joined");
-      // socket.off("join");
-      // socket.close();
-    };
-  }, [isLoggedIn, activeUserName, activeUsers]);
-
+  /** Handle events from UI */
   function onSendMessage() {
     setMessage("");
   }
