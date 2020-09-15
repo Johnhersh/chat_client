@@ -5,6 +5,7 @@ import Button from "react-bootstrap/Button";
 import ListGroup from "react-bootstrap/ListGroup";
 import io from "socket.io-client";
 import axios from "axios";
+import { Redirect } from "react-router-dom";
 
 import "./chat.styles.scss";
 
@@ -16,6 +17,7 @@ interface ChatProps {
 }
 
 const ChatView: FunctionComponent<ChatProps> = ({ activeUserName }) => {
+  const [shouldDisconnect, setShouldDisconnect] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [message, setMessage] = useState("");
   const [activeUsers, setActiveUsers] = useState<Array<string>>([]);
@@ -23,6 +25,14 @@ const ChatView: FunctionComponent<ChatProps> = ({ activeUserName }) => {
   // Doing this here so we only establish a connection to the server once
   useEffect(() => {
     socket = io(apiUrl);
+    return function cleanup() {
+      console.log("cleaned up connection");
+      socket.emit("disconnect");
+      socket.off("disconnect");
+      socket.off("user_joined");
+      socket.off("join");
+      socket.close();
+    };
   }, []);
 
   // Connect to websockets
@@ -60,11 +70,22 @@ const ChatView: FunctionComponent<ChatProps> = ({ activeUserName }) => {
       setActiveUsers(newUsersList);
     });
 
+    socket.on("disconnect", (reason: string) => {
+      if (reason === "transport close") {
+        console.log("Server shut down");
+        setShouldDisconnect(true);
+      }
+    });
+
     return function cleanup() {
-      socket.emit("disconnect");
-      socket.off("disconnect");
+      // console.log("Cleaning up!");
+      // socket.emit("disconnect");
+      // socket.off("disconnect");
+      // socket.off("user_joined");
+      // socket.off("join");
+      // socket.close();
     };
-  }, [activeUserName, activeUsers, isLoggedIn]);
+  }, [isLoggedIn, activeUserName, activeUsers]);
 
   function onSendMessage() {
     setMessage("");
@@ -76,6 +97,8 @@ const ChatView: FunctionComponent<ChatProps> = ({ activeUserName }) => {
 
   return (
     <div className="chatViewOuterContainer">
+      {shouldDisconnect ? <Redirect to="/" /> : null}
+      {activeUserName === "" ? <Redirect to="/" /> : null}
       <div className="chatViewInnerContainer">
         <div className="messagesContainer" />
         <div className="activeUserListContainer">
