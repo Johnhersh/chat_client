@@ -26,7 +26,6 @@ const ChatView: FunctionComponent<ChatProps> = ({ activeUserName }) => {
   useEffect(() => {
     socket = io(apiUrl);
     return function cleanup() {
-      console.log("cleaned up connection");
       socket.emit("disconnect");
       socket.off("disconnect");
       socket.off("user_joined");
@@ -42,8 +41,6 @@ const ChatView: FunctionComponent<ChatProps> = ({ activeUserName }) => {
         axios.get(`${apiUrl}/getActiveUsersList`).then((response) => {
           const newActiveUsers = response.data;
           setActiveUsers(newActiveUsers);
-          console.log("setting active users to: ");
-          console.log(newActiveUsers);
         });
         setIsLoggedIn(true);
       });
@@ -66,7 +63,6 @@ const ChatView: FunctionComponent<ChatProps> = ({ activeUserName }) => {
     });
 
     socket.on("user_left", (username: string) => {
-      console.log(`User left: ${username}`);
       let newUsersList = activeUsers;
       for (let i = 0; i < activeUsers.length; i++) {
         if (newUsersList[i] === username) {
