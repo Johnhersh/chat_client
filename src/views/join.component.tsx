@@ -11,6 +11,8 @@ interface JoinProps {
   setActiveUserName: React.Dispatch<React.SetStateAction<string>>;
 }
 
+type FormInputEvent = React.MouseEvent<HTMLElement, MouseEvent> | React.FormEvent<HTMLElement>;
+
 const Join: FunctionComponent<JoinProps> = ({ activeUserName, setActiveUserName }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
@@ -18,7 +20,8 @@ const Join: FunctionComponent<JoinProps> = ({ activeUserName, setActiveUserName 
     setActiveUserName(event.currentTarget.value);
   }
 
-  function onSubmit() {
+  function onSubmit(event: FormInputEvent) {
+    event.preventDefault();
     axios.post(`${apiUrl}/login`, { newUser: activeUserName }).then(function (response) {
       const returnValue: { nameAvailable: boolean } = response.data;
 
@@ -36,7 +39,7 @@ const Join: FunctionComponent<JoinProps> = ({ activeUserName, setActiveUserName 
   return (
     <div className="joinOuterContainer">
       {isLoggedIn ? <Redirect to="/chat" /> : null}
-      <Form>
+      <Form onSubmit={onSubmit}>
         <Form.Group controlId="joinInfo">
           <Form.Label>User name</Form.Label>
           <Form.Control
