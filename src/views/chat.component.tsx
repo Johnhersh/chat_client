@@ -16,24 +16,55 @@ interface ChatProps {
 }
 
 const ChatView: FunctionComponent<ChatProps> = ({ activeUserName }) => {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [message, setMessage] = useState("");
   const [activeUsers, setActiveUsers] = useState<Array<string>>([]);
 
-  // Connect to websockets
+  // Doing this here so we only establish a connection to the server once
   useEffect(() => {
     socket = io(apiUrl);
-    socket.emit("join", activeUserName, () => {
-      axios.get(`${apiUrl}/getActiveUsersList`).then((response) => {
-        const activeUsers = response.data;
-        setActiveUsers(activeUsers);
+  }, []);
+
+  // Connect to websockets
+  useEffect(() => {
+    if (!isLoggedIn) {
+      socket.emit("join", activeUserName, () => {
+        axios.get(`${apiUrl}/getActiveUsersList`).then((response) => {
+          const newActiveUsers = response.data;
+          setActiveUsers(newActiveUsers);
+          console.log("setting active users to: ");
+          console.log(newActiveUsers);
+        });
+        setIsLoggedIn(true);
       });
+    }
+
+    socket.on("user_left", (username: string) => {
+      console.log(`User left: ${username}`);
+      let newUsersList = activeUsers;
+      for (let i = 0; i < activeUsers.length; i++) {
+        if (newUsersList[i] === username) {
+          activeUsers.splice(i, 1);
+        }
+      }
+      setActiveUsers(newUsersList);
+    });
+
+    socket.on("user_joined", (username: string) => {
+      let newUsersList = [...activeUsers, username];
+
+      console.log("new users list:");
+      console.log(activeUsers);
+      console.log(newUsersList);
+
+      setActiveUsers(newUsersList);
     });
 
     return function cleanup() {
       socket.emit("disconnect");
       socket.off("disconnect");
     };
-  }, [activeUserName]);
+  }, [activeUserName, activeUsers, isLoggedIn]);
 
   function onSendMessage() {
     setMessage("");
