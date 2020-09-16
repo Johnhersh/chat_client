@@ -4,14 +4,15 @@ import "./message.styles.scss";
 interface MessageProps {
   from: string;
   message: string;
+  activeUser: string;
 }
 
-const Message: FunctionComponent<MessageProps> = ({ from, message }) => {
+const Message: FunctionComponent<MessageProps> = ({ from, message, activeUser }) => {
   return (
-    <div className={"messageContainer " + (from === "Bob" ? "messageFromSelf" : null)}>
+    <div className={"messageContainer " + (from === activeUser ? "messageFromSelf" : null)}>
       <div className="textContainer">
         <div className="topInfoContainer">{from}</div>
-        {message}
+        <div className="messageBody">{message}</div>
       </div>
     </div>
   );

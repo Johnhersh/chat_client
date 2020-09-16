@@ -18,7 +18,7 @@ interface ChatProps {
   activeUserName: string;
 }
 
-type message = {
+export type message = {
   message: string;
   from: string;
 };
@@ -48,7 +48,6 @@ const ChatView: FunctionComponent<ChatProps> = ({ activeUserName }) => {
       socket.emit("join", { username: activeUserName, room: "general" }, () => {
         axios.get(`${apiUrl}/getActiveUsersList`).then((response) => {
           const newActiveUsers = response.data;
-          console.log(newActiveUsers);
           setActiveUsers(newActiveUsers);
         });
         setIsLoggedIn(true);
@@ -85,6 +84,8 @@ const ChatView: FunctionComponent<ChatProps> = ({ activeUserName }) => {
   /** Receive messages via websocket */
   useEffect(() => {
     socket.on("receive_message", (incomingMessage: { message: string; senderName: string }) => {
+      console.log("Incoming message:");
+      console.log(incomingMessage);
       const newMessage = { message: incomingMessage.message, from: incomingMessage.senderName };
       const newMessageLog: message[] = [...messageLog, newMessage];
       setMessageLog(newMessageLog);
@@ -94,6 +95,9 @@ const ChatView: FunctionComponent<ChatProps> = ({ activeUserName }) => {
   /** Handle events from UI */
   function onSendMessage() {
     socket.emit("submit_message", message);
+    const newMessage: message = { message: message, from: activeUserName };
+    const newMessageLog: message[] = [...messageLog, newMessage];
+    setMessageLog(newMessageLog);
     setMessage("");
   }
 
@@ -103,11 +107,11 @@ const ChatView: FunctionComponent<ChatProps> = ({ activeUserName }) => {
 
   return (
     <div className="chatViewOuterContainer">
-      {shouldDisconnect ? <Redirect to="/chat" /> : null}
-      {activeUserName === "" ? <Redirect to="/chat" /> : null}
+      {shouldDisconnect ? <Redirect to="/" /> : null}
+      {activeUserName === "" ? <Redirect to="/" /> : null}
       <div className="chatViewInnerContainer">
         <div className="messagesContainer">
-          <MessageLog />
+          <MessageLog activeUserName={activeUserName} messages={messageLog} />
         </div>
         <div className="activeUserListContainer">
           <ListGroup variant="flush">
