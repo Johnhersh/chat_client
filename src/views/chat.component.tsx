@@ -7,6 +7,8 @@ import io from "socket.io-client";
 import axios from "axios";
 import { Redirect } from "react-router-dom";
 
+import MessageLog from "../components/messageLog.component";
+
 import "./chat.styles.scss";
 
 const apiUrl = "http://localhost:3001";
@@ -95,10 +97,12 @@ const ChatView: FunctionComponent<ChatProps> = ({ activeUserName }) => {
 
   return (
     <div className="chatViewOuterContainer">
-      {shouldDisconnect ? <Redirect to="/" /> : null}
-      {activeUserName === "" ? <Redirect to="/" /> : null}
+      {shouldDisconnect ? <Redirect to="/chat" /> : null}
+      {activeUserName === "" ? <Redirect to="/chat" /> : null}
       <div className="chatViewInnerContainer">
-        <div className="messagesContainer" />
+        <div className="messagesContainer">
+          <MessageLog />
+        </div>
         <div className="activeUserListContainer">
           <ListGroup variant="flush">
             {activeUsers.map((activeUser, index) => {
