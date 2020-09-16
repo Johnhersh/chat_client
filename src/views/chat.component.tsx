@@ -19,6 +19,7 @@ interface ChatProps {
 const ChatView: FunctionComponent<ChatProps> = ({ activeUserName }) => {
   const [shouldDisconnect, setShouldDisconnect] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [messageLog, setMessageLog] = useState<Array<string>>([]);
   const [message, setMessage] = useState("");
   const [activeUsers, setActiveUsers] = useState<Array<string>>([]);
 
@@ -37,9 +38,10 @@ const ChatView: FunctionComponent<ChatProps> = ({ activeUserName }) => {
   /** Join the chat */
   useEffect(() => {
     if (!isLoggedIn) {
-      socket.emit("join", activeUserName, () => {
+      socket.emit("join", { username: activeUserName, room: "general" }, () => {
         axios.get(`${apiUrl}/getActiveUsersList`).then((response) => {
           const newActiveUsers = response.data;
+          console.log(newActiveUsers);
           setActiveUsers(newActiveUsers);
         });
         setIsLoggedIn(true);
@@ -73,8 +75,19 @@ const ChatView: FunctionComponent<ChatProps> = ({ activeUserName }) => {
     });
   }, [activeUsers]);
 
+  /** Receive messages via websocket */
+  useEffect(() => {
+    socket.on("receive_message", (message: string) => {
+      let newMessageLog = [...messageLog];
+      newMessageLog = [...newMessageLog, message];
+
+      setMessageLog(newMessageLog);
+    });
+  }, [messageLog]);
+
   /** Handle events from UI */
   function onSendMessage() {
+    socket.emit("submit_message", message);
     setMessage("");
   }
 
