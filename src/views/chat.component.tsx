@@ -18,10 +18,15 @@ interface ChatProps {
   activeUserName: string;
 }
 
+type message = {
+  message: string;
+  from: string;
+};
+
 const ChatView: FunctionComponent<ChatProps> = ({ activeUserName }) => {
   const [shouldDisconnect, setShouldDisconnect] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [messageLog, setMessageLog] = useState<Array<string>>([]);
+  const [messageLog, setMessageLog] = useState<Array<message>>([]);
   const [message, setMessage] = useState("");
   const [activeUsers, setActiveUsers] = useState<Array<string>>([]);
 
@@ -79,8 +84,9 @@ const ChatView: FunctionComponent<ChatProps> = ({ activeUserName }) => {
 
   /** Receive messages via websocket */
   useEffect(() => {
-    socket.on("receive_message", (message: string) => {
-      const newMessageLog = [...messageLog, message];
+    socket.on("receive_message", (incomingMessage: { message: string; senderName: string }) => {
+      const newMessage = { message: incomingMessage.message, from: incomingMessage.senderName };
+      const newMessageLog: message[] = [...messageLog, newMessage];
       setMessageLog(newMessageLog);
     });
   }, [messageLog]);
