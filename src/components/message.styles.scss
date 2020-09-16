@@ -4,6 +4,10 @@
   width: 100%;
 }
 
+.messageFromSelf {
+  flex-direction: row-reverse;
+}
+
 .textContainer {
   flex: 1;
   max-width: 30%;

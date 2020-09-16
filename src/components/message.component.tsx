@@ -8,7 +8,7 @@ interface MessageProps {
 
 const Message: FunctionComponent<MessageProps> = ({ from, message }) => {
   return (
-    <div className="messageContainer">
+    <div className={"messageContainer " + (from === "Bob" ? "messageFromSelf" : null)}>
       <div className="textContainer">
         <div className="topInfoContainer">{from}</div>
         {message}
