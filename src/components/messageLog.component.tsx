@@ -1,4 +1,5 @@
 import React, { FunctionComponent } from "react";
+import ScrollToBottom from "react-scroll-to-bottom";
 import Message from "./message.component";
 import { message } from "../views/chat.component";
 import "./messageLog.styles.scss";
@@ -11,7 +12,8 @@ interface MessageLogProps {
 const MessageLog: FunctionComponent<MessageLogProps> = ({ messages, activeUserName }) => {
   return (
     <div className="messageLog">
-      <div className="messagesOverflow">
+      <ScrollToBottom className="messagesOverflow" behavior={"smooth"}>
+        {/* <div className="messagesOverflow"> */}
         {messages.map((message, i) => (
           <Message
             key={i}
@@ -20,7 +22,8 @@ const MessageLog: FunctionComponent<MessageLogProps> = ({ messages, activeUserNa
             activeUser={activeUserName}
           />
         ))}
-      </div>
+        {/* </div> */}
+      </ScrollToBottom>
     </div>
   );
 };
