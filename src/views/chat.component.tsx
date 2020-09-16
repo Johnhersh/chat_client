@@ -78,9 +78,7 @@ const ChatView: FunctionComponent<ChatProps> = ({ activeUserName }) => {
   /** Receive messages via websocket */
   useEffect(() => {
     socket.on("receive_message", (message: string) => {
-      let newMessageLog = [...messageLog];
-      newMessageLog = [...newMessageLog, message];
-
+      const newMessageLog = [...messageLog, message];
       setMessageLog(newMessageLog);
     });
   }, [messageLog]);
