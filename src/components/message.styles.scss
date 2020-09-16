@@ -1,7 +1,18 @@
 .messageContainer {
   display: flex;
-  background-color: darkmagenta;
   margin-top: 5px;
-  height: 150px;
   width: 100%;
+}
+
+.textContainer {
+  flex: 1;
+  max-width: 30%;
+  color: white;
+  background-color: gray;
+  padding: 5px;
+}
+
+.topInfoContainer {
+  display: flex;
+  flex: 1;
 }
