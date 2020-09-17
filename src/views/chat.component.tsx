@@ -11,7 +11,7 @@ import { dbMessage, getMessageLog, getActiveUsers } from "../serverRoutes";
 
 import "./chat.styles.scss";
 
-const socketUrl = "http://johnhersh-chat-app.herokuapp.com";
+const socketUrl = "https://johnhersh-chat-app.herokuapp.com";
 let socket: SocketIOClient.Socket;
 
 interface ChatProps {
