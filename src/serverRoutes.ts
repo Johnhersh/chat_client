@@ -8,3 +8,9 @@ export async function getMessageLog() {
 
   return response.data;
 }
+
+export async function logIn(newUserName: string) {
+  const response = await axios.post(`${apiUrl}/login`, { newUser: newUserName });
+
+  return response.data;
+}
