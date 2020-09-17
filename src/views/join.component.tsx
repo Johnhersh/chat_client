@@ -25,10 +25,7 @@ const Join: FunctionComponent<JoinProps> = ({ activeUserName, setActiveUserName 
     axios.post(`${apiUrl}/login`, { newUser: activeUserName }).then(function (response) {
       const returnValue: { nameAvailable: boolean } = response.data;
 
-      console.log(returnValue);
-
       if (returnValue.nameAvailable) {
-        console.log("Logged in!");
         setIsLoggedIn(true);
       } else {
         console.log("Name unavailable!");

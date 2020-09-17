@@ -8,6 +8,7 @@ import axios from "axios";
 import { Redirect } from "react-router-dom";
 
 import MessageLog from "../components/messageLog.component";
+import { dbMessage, getMessageLog } from "../serverRoutes";
 
 import "./chat.styles.scss";
 
@@ -40,6 +41,18 @@ const ChatView: FunctionComponent<ChatProps> = ({ activeUserName }) => {
       socket.off("join");
       socket.close();
     };
+  }, []);
+
+  /** Get message log */
+  useEffect(() => {
+    getMessageLog().then((messageLog) => {
+      const incomingMessageLog: dbMessage[] = messageLog;
+      const newMessageLog: message[] = [];
+      incomingMessageLog.forEach((message) => {
+        newMessageLog.push({ message: message.chat_message, from: message.from_user });
+      });
+      setMessageLog(newMessageLog);
+    });
   }, []);
 
   /** Join the chat */
@@ -84,8 +97,6 @@ const ChatView: FunctionComponent<ChatProps> = ({ activeUserName }) => {
   /** Receive messages via websocket */
   useEffect(() => {
     socket.on("receive_message", (incomingMessage: { message: string; senderName: string }) => {
-      console.log("Incoming message:");
-      console.log(incomingMessage);
       const newMessage = { message: incomingMessage.message, from: incomingMessage.senderName };
       const newMessageLog: message[] = [...messageLog, newMessage];
       setMessageLog(newMessageLog);
