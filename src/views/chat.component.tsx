@@ -4,15 +4,14 @@ import FormControl from "react-bootstrap/FormControl";
 import Button from "react-bootstrap/Button";
 import ListGroup from "react-bootstrap/ListGroup";
 import io from "socket.io-client";
-import axios from "axios";
 import { Redirect } from "react-router-dom";
 
 import MessageLog from "../components/messageLog.component";
-import { dbMessage, getMessageLog } from "../serverRoutes";
+import { dbMessage, getMessageLog, getActiveUsers } from "../serverRoutes";
 
 import "./chat.styles.scss";
 
-const apiUrl = "http://localhost:3001";
+const socketUrl = "http://johnhersh-chat-app.herokuapp.com";
 let socket: SocketIOClient.Socket;
 
 interface ChatProps {
@@ -33,7 +32,7 @@ const ChatView: FunctionComponent<ChatProps> = ({ activeUserName }) => {
 
   /** Initial websocket connection */
   useEffect(() => {
-    socket = io(apiUrl);
+    socket = io(socketUrl);
     return function cleanup() {
       socket.emit("disconnect");
       socket.off("disconnect");
@@ -59,9 +58,9 @@ const ChatView: FunctionComponent<ChatProps> = ({ activeUserName }) => {
   useEffect(() => {
     if (!isLoggedIn) {
       socket.emit("join", { username: activeUserName, room: "general" }, () => {
-        axios.get(`${apiUrl}/getActiveUsersList`).then((response) => {
-          const newActiveUsers = response.data;
-          setActiveUsers(newActiveUsers);
+        getActiveUsers().then((activeUsers) => {
+          console.log(activeUsers);
+          setActiveUsers(activeUsers);
         });
         setIsLoggedIn(true);
       });
