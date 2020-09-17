@@ -1,11 +1,8 @@
 import React, { useState, FunctionComponent } from "react";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
-// import axios from "axios";
 import { Redirect } from "react-router-dom";
 import { logIn } from "../serverRoutes";
-
-// const apiUrl = "http://localhost:3001";
 
 interface JoinProps {
   activeUserName: string;
