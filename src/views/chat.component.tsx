@@ -59,7 +59,6 @@ const ChatView: FunctionComponent<ChatProps> = ({ activeUserName }) => {
     if (!isLoggedIn) {
       socket.emit("join", { username: activeUserName, room: "general" }, () => {
         getActiveUsers().then((activeUsers) => {
-          console.log(activeUsers);
           setActiveUsers(activeUsers);
         });
         setIsLoggedIn(true);
