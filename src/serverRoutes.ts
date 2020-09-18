@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const apiUrl = "https://johnhersh-chat-app.herokuapp.com";
+const apiUrl = process.env.REACT_APP_SERVER_LOCATION;
 export type dbMessage = { id: number; chat_message: string; from_user: string; time: string };
 
 export async function getMessageLog() {

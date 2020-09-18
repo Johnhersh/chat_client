@@ -11,7 +11,7 @@ import { dbMessage, getMessageLog, getActiveUsers } from "../serverRoutes";
 
 import "./chat.styles.scss";
 
-const socketUrl = "https://johnhersh-chat-app.herokuapp.com";
+const socketUrl = process.env.REACT_APP_SERVER_LOCATION || "http://localhost:3001";
 let socket: SocketIOClient.Socket;
 
 interface ChatProps {
