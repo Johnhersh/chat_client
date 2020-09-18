@@ -12,8 +12,7 @@ interface MessageLogProps {
 const MessageLog: FunctionComponent<MessageLogProps> = ({ messages, activeUserName }) => {
   return (
     <div className="messageLog">
-      <ScrollToBottom className="messagesOverflow" behavior={"smooth"}>
-        {/* <div className="messagesOverflow"> */}
+      <ScrollToBottom className="messagesOverflow noScrollBarContainer" behavior={"smooth"}>
         {messages.map((message, i) => (
           <Message
             key={i}
@@ -22,7 +21,6 @@ const MessageLog: FunctionComponent<MessageLogProps> = ({ messages, activeUserNa
             activeUser={activeUserName}
           />
         ))}
-        {/* </div> */}
       </ScrollToBottom>
     </div>
   );

@@ -25,3 +25,14 @@
   flex: 1;
   background-color: #101010;
 }
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.noScrollBarContainer::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.noScrollBarContainer {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
