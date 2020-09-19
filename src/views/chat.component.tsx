@@ -126,7 +126,12 @@ const ChatView: FunctionComponent<ChatProps> = ({ activeUserName }) => {
           <ListGroup variant="flush">
             {activeUsers.map((activeUser, index) => {
               return (
-                <ListGroup.Item key={activeUser + index} variant="dark">
+                <ListGroup.Item
+                  key={activeUser + index}
+                  variant="dark"
+                  className="mb-1"
+                  style={{ backgroundColor: "#22252c", color: "#9c9da1" }}
+                >
                   {activeUser}
                 </ListGroup.Item>
               );
