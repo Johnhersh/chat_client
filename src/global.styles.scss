@@ -19,7 +19,16 @@ $radius-large: 20px;
 
 @mixin neu-small-highlight {
   border-radius: 20px;
-  //   background: linear-gradient(145deg, #4483d8, #519bff);
   background: $highlight-color;
   box-shadow: 5px 5px 10px #1c2025, -5px -5px 10px #2a3947;
 }
+
+/** Bootstrap customization */
+$border-radius: $radius-large;
+$border-width: 0;
+
+$theme-colors: (
+  primary: #4483d8,
+);
+
+@import "~bootstrap/scss/bootstrap";

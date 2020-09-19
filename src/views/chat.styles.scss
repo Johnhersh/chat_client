@@ -20,18 +20,25 @@
   overflow: hidden;
   background: linear-gradient(145deg, $gradient-light, $gradient-dark);
   border-top-left-radius: $radius-large;
+  border-bottom-left-radius: $radius-large;
 }
 
 .inputContainer {
   width: 100%;
+  margin-top: 10px;
 }
 
 .activeUserListContainer {
   flex: 1;
   background-color: $gradient-light;
   overflow: hidden;
-  border-top-right-radius: $radius-large;
   box-shadow: -5px 0px 20px #212329;
+  border-top-right-radius: $radius-large;
+  border-bottom-right-radius: $radius-large;
+}
+
+.input-group .btn .btn-outline-secondary {
+  background: red;
 }
 
 /* Hide scrollbar for Chrome, Safari and Opera */

@@ -34,14 +34,16 @@ const Join: FunctionComponent<JoinProps> = ({ activeUserName, setActiveUserName 
       {isLoggedIn ? <Redirect to="/chat" /> : null}
       <Form onSubmit={onSubmit}>
         <Form.Group controlId="joinInfo">
-          <Form.Label>User name</Form.Label>
+          <Form.Label className="mb-3 text-white" color="white">
+            User name
+          </Form.Label>
           <Form.Control
             type="text"
             placeholder="Enter username"
             value={activeUserName}
             onChange={onUserFieldChange}
           />
-          <Button className="mb-2" onClick={onSubmit}>
+          <Button className="mt-3" onClick={onSubmit}>
             Submit
           </Button>
         </Form.Group>

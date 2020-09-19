@@ -137,6 +137,7 @@ const ChatView: FunctionComponent<ChatProps> = ({ activeUserName }) => {
       <div className="inputContainer">
         <InputGroup className="mb-0">
           <FormControl
+            className="bg-dark text-light"
             placeholder="message"
             aria-label="message"
             aria-describedby="basic-addon2"
@@ -149,7 +150,7 @@ const ChatView: FunctionComponent<ChatProps> = ({ activeUserName }) => {
             }}
           />
           <InputGroup.Append>
-            <Button variant="outline-secondary" onClick={onSendMessage}>
+            <Button className="rounded-bottom-right" variant="primary" onClick={onSendMessage}>
               Send
             </Button>
           </InputGroup.Append>

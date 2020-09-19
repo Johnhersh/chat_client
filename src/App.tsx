@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route } from "react-router-dom";
 import ChatView from "./views/chat.component";
 import Join from "./views/join.component";
 import "./App.scss";
+import "./global.styles.scss";
 
 function App() {
   const [username, setUsername] = useState("");
