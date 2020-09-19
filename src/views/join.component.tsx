@@ -1,6 +1,8 @@
-import React, { useState, FunctionComponent } from "react";
+import React, { useState, useRef, FunctionComponent } from "react";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
+import Overlay from "react-bootstrap/Overlay";
+import Tooltip from "react-bootstrap/Tooltip";
 import { Redirect } from "react-router-dom";
 import { logIn } from "../serverRoutes";
 
@@ -13,9 +15,12 @@ type FormInputEvent = React.MouseEvent<HTMLElement, MouseEvent> | React.FormEven
 
 const Join: FunctionComponent<JoinProps> = ({ activeUserName, setActiveUserName }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isUsernameTaken, setIsUsernameTaken] = useState(false);
+  const tooltipTarget = useRef(null);
 
   function onUserFieldChange(event: React.ChangeEvent<HTMLInputElement>) {
     setActiveUserName(event.currentTarget.value);
+    setIsUsernameTaken(false);
   }
 
   function onSubmit(event: FormInputEvent) {
@@ -25,6 +30,7 @@ const Join: FunctionComponent<JoinProps> = ({ activeUserName, setActiveUserName 
         setIsLoggedIn(true);
       } else {
         console.log("Name unavailable!");
+        setIsUsernameTaken(true);
       }
     });
   }
@@ -42,10 +48,18 @@ const Join: FunctionComponent<JoinProps> = ({ activeUserName, setActiveUserName 
             placeholder="Enter username"
             value={activeUserName}
             onChange={onUserFieldChange}
+            ref={tooltipTarget}
           />
           <Button className="mt-3" onClick={onSubmit}>
             Submit
           </Button>
+          <Overlay target={tooltipTarget.current} show={isUsernameTaken} placement="top">
+            {(props) => (
+              <Tooltip id="overlay-username" {...props}>
+                Username is being used!
+              </Tooltip>
+            )}
+          </Overlay>
         </Form.Group>
       </Form>
     </div>
