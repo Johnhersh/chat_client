@@ -1,18 +1,27 @@
+@import "../global.styles.scss";
+
 .messageContainer {
   display: flex;
-  margin-top: 5px;
-  width: 100%;
+  margin-top: 15px;
+  margin-bottom: 15px;
+  margin-right: 15px;
+  margin-left: 15px;
 }
 
 .messageFromSelf {
   flex-direction: row-reverse;
+
+  .textContainer {
+    @include neu-small-highlight;
+  }
 }
 
 .textContainer {
+  @include neu-small-light;
   max-width: 30%;
   color: white;
-  background-color: gray;
-  padding: 5px;
+  padding: 10px;
+  border-radius: $radius-large;
 }
 
 .topInfoContainer {

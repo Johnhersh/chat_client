@@ -1,3 +1,5 @@
+@import "../global.styles.scss";
+
 .messageLog {
   display: flex;
   flex: 1;
@@ -5,7 +7,7 @@
   align-items: center;
   justify-content: flex-end;
   height: 100%;
-  padding: 5px;
+  // padding: $radius-large;
   //   background-color: red;
   button {
     right: 50%; // This is for the scroll-to-bottom button that appears when user scrolls up

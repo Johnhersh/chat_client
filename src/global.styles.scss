@@ -1,4 +1,25 @@
 $gradient-light: #3d414a;
 $gradient-dark: #1a1d24;
 
+$highlight-color: #4483d8;
+
 $radius-large: 20px;
+
+@mixin neu-small-dark {
+  border-radius: 20px;
+  background: linear-gradient(145deg, #242a30, #1f2329);
+  box-shadow: 7px 7px 16px #1b1f24, -7px -7px 16px #292f36;
+}
+
+@mixin neu-small-light {
+  border-radius: 20px;
+  background: linear-gradient(145deg, #363a42, #40444e);
+  box-shadow: 5px 5px 10px #2f333a, -5px -5px 10px #494d58;
+}
+
+@mixin neu-small-highlight {
+  border-radius: 20px;
+  //   background: linear-gradient(145deg, #4483d8, #519bff);
+  background: $highlight-color;
+  box-shadow: 5px 5px 10px #1c2025, -5px -5px 10px #2a3947;
+}
