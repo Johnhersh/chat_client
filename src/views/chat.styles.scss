@@ -1,3 +1,5 @@
+@import "../global.styles.scss";
+
 .chatViewOuterContainer {
   display: flex;
   flex-direction: column;
@@ -15,6 +17,8 @@
 .messagesContainer {
   flex: 4;
   background-color: #202020;
+  overflow: hidden;
+  background: linear-gradient(145deg, $gradient-light, $gradient-dark);
 }
 
 .inputContainer {
