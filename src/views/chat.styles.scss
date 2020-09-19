@@ -19,6 +19,7 @@
   background-color: #202020;
   overflow: hidden;
   background: linear-gradient(145deg, $gradient-light, $gradient-dark);
+  border-top-left-radius: $radius-large;
 }
 
 .inputContainer {
@@ -27,7 +28,10 @@
 
 .activeUserListContainer {
   flex: 1;
-  background-color: #101010;
+  background-color: $gradient-light;
+  overflow: hidden;
+  // background: linear-gradient(-90deg, $gradient-light, $gradient-dark);
+  border-top-right-radius: $radius-large;
 }
 
 /* Hide scrollbar for Chrome, Safari and Opera */
