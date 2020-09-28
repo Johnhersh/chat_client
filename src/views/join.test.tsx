@@ -6,7 +6,8 @@ import Join from "./join.component";
 jest.mock("../serverRoutes.ts");
 
 describe("Joining the chat", () => {
-  const wrapper = shallow(<Join activeUserName="" setActiveUserName={() => {}} />);
+  const mockSetActiveUsername = jest.fn();
+  const wrapper = shallow(<Join activeUserName="" setActiveUserName={mockSetActiveUsername} />);
   const mockEvent = { preventDefault: jest.fn() }; // This is needed because the button sends an empty event that doesn't have the preventDefault function
   const flushPromises = () => new Promise(setImmediate); // Using this to resolve all promises
 
@@ -36,7 +37,6 @@ describe("Inputting a new username", () => {
   const wrapper = shallow(<Join activeUserName="" setActiveUserName={mockSetActiveUsername} />);
 
   it("should update state on parent", () => {
-    console.log(wrapper.debug());
     wrapper.find("FormControl").simulate("change", { currentTarget: { value: "testName" } });
 
     expect(mockSetActiveUsername).toHaveBeenCalled();
