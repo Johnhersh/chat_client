@@ -27,10 +27,8 @@ const Join: FunctionComponent<JoinProps> = ({ activeUserName, setActiveUserName 
     event.preventDefault();
     logIn(activeUserName).then((nameAvailable: boolean) => {
       if (nameAvailable) {
-        console.log("Name available!");
         setIsLoggedIn(true);
       } else {
-        console.log("Name unavailable!");
         setIsUsernameTaken(true);
       }
     });

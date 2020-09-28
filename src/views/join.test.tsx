@@ -30,3 +30,15 @@ describe("Joining the chat", () => {
     expect(wrapper.contains(<Redirect to="/chat" />)).toBe(true);
   });
 });
+
+describe("Inputting a new username", () => {
+  const mockSetActiveUsername = jest.fn();
+  const wrapper = shallow(<Join activeUserName="" setActiveUserName={mockSetActiveUsername} />);
+
+  it("should update state on parent", () => {
+    console.log(wrapper.debug());
+    wrapper.find("FormControl").simulate("change", { currentTarget: { value: "testName" } });
+
+    expect(mockSetActiveUsername).toHaveBeenCalled();
+  });
+});

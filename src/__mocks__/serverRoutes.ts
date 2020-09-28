@@ -3,7 +3,6 @@ export async function getMessageLog() {
 }
 
 export async function logIn(newUserName: string) {
-  console.log("In mocked server routes");
   if (newUserName === "nameAvailable") return Promise.resolve(true);
   if (newUserName === "nameUnAvailable") return Promise.resolve(false);
 
