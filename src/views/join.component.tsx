@@ -27,6 +27,7 @@ const Join: FunctionComponent<JoinProps> = ({ activeUserName, setActiveUserName 
     event.preventDefault();
     logIn(activeUserName).then((nameAvailable: boolean) => {
       if (nameAvailable) {
+        console.log("Name available!");
         setIsLoggedIn(true);
       } else {
         console.log("Name unavailable!");
@@ -38,7 +39,7 @@ const Join: FunctionComponent<JoinProps> = ({ activeUserName, setActiveUserName 
   return (
     <div className="joinOuterContainer">
       {isLoggedIn ? <Redirect to="/chat" /> : null}
-      <Form onSubmit={onSubmit}>
+      <Form onSubmit={(event) => onSubmit(event)}>
         <Form.Group controlId="joinInfo">
           <Form.Label className="mb-3 text-white" color="white">
             User name
@@ -50,7 +51,7 @@ const Join: FunctionComponent<JoinProps> = ({ activeUserName, setActiveUserName 
             onChange={onUserFieldChange}
             ref={tooltipTarget}
           />
-          <Button className="mt-3" onClick={onSubmit}>
+          <Button className="mt-3" onClick={(event) => onSubmit(event)}>
             Submit
           </Button>
           <Overlay target={tooltipTarget.current} show={isUsernameTaken} placement="top">
