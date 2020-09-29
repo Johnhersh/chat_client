@@ -34,9 +34,16 @@ const Join: FunctionComponent<JoinProps> = ({ activeUserName, setActiveUserName 
     });
   }
 
+  if (isLoggedIn)
+    return (
+      <div>
+        Redirecting
+        <Redirect to="/chat" />
+      </div>
+    );
+
   return (
     <div className="joinOuterContainer">
-      {isLoggedIn ? <Redirect to="/chat" /> : null}
       <Form onSubmit={(event) => onSubmit(event)}>
         <Form.Group controlId="joinInfo">
           <Form.Label className="mb-3 text-white" color="white">
