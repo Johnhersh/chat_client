@@ -1,5 +1,4 @@
 import React from "react";
-import { shallow } from "enzyme";
 import { Redirect } from "react-router-dom";
 import Join from "./join.component";
 
