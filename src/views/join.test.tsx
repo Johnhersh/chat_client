@@ -1,8 +1,6 @@
 import React from "react";
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import { render, screen, fireEvent } from "@testing-library/react";
 import { BrowserRouter } from "react-router-dom";
-// import "@testing-library/jest-dom/extend-expect";
-// import { Redirect } from "react-router-dom";
 import Join from "./join.component";
 import { act } from "react-dom/test-utils";
 
