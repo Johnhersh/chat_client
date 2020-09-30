@@ -38,16 +38,29 @@ describe("Joining the chat", () => {
 
     expect(screen.queryByText("Redirecting")).toBeNull();
 
-    // screen.debug();
     unmount();
   });
 });
 
 describe("Inputting a new username", () => {
-  //   const mockSetActiveUsername = jest.fn();
-  //   const wrapper = shallow(<Join activeUserName="" setActiveUserName={mockSetActiveUsername} />);
-  //   it("should update state on parent", () => {
-  //     wrapper.find("FormControl").simulate("change", { currentTarget: { value: "testName" } });
-  //     expect(mockSetActiveUsername).toHaveBeenCalled();
-  //   });
+  const mockSetActiveUsername = jest.fn();
+  const setup = () => {
+    const utils = render(
+      <Join activeUserName="nameUnAvailable" setActiveUserName={mockSetActiveUsername} />,
+      { wrapper: BrowserRouter }
+    );
+    const input = utils.getByLabelText("username-input");
+
+    return {
+      input,
+      ...utils,
+    };
+  };
+
+  it("should update state on parent", () => {
+    const { input } = setup();
+    fireEvent.change(input, { target: { value: "newUserName" } });
+    expect(mockSetActiveUsername).toHaveBeenCalledWith("newUserName");
+    // screen.debug();
+  });
 });
