@@ -25,12 +25,14 @@
     "socket.io-client": "^2.3.0",
     "typescript": "^4.0.3"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "jest-environment-jsdom-sixteen": "^1.0.3"
+  },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
-    "test-coverage": "react-scripts test --coverage --watchAll",
+    "test": "react-scripts test --env=jest-environment-jsdom-sixteen",
+    "test-coverage": "react-scripts test --coverage --watchAll --env=jest-environment-jsdom-sixteen",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
