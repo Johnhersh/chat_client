@@ -44,23 +44,16 @@ describe("Joining the chat", () => {
 
 describe("Inputting a new username", () => {
   const mockSetActiveUsername = jest.fn();
-  const setup = () => {
-    const utils = render(
-      <Join activeUserName="nameUnAvailable" setActiveUserName={mockSetActiveUsername} />,
+  it("should call update state function on parent", () => {
+    const nameToInput = "newUserName";
+    const { getByLabelText, unmount } = render(
+      <Join activeUserName="" setActiveUserName={mockSetActiveUsername} />,
       { wrapper: BrowserRouter }
     );
-    const input = utils.getByLabelText("username-input");
-
-    return {
-      input,
-      ...utils,
-    };
-  };
-
-  it("should update state on parent", () => {
-    const { input } = setup();
-    fireEvent.change(input, { target: { value: "newUserName" } });
-    expect(mockSetActiveUsername).toHaveBeenCalledWith("newUserName");
+    const input = getByLabelText("username-input");
+    fireEvent.change(input, { target: { value: nameToInput } });
+    expect(mockSetActiveUsername).toHaveBeenCalledWith(nameToInput);
+    unmount();
     // screen.debug();
   });
 });
