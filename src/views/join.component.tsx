@@ -55,6 +55,7 @@ const Join: FunctionComponent<JoinProps> = ({ activeUserName, setActiveUserName 
             value={activeUserName}
             onChange={onUserFieldChange}
             ref={tooltipTarget}
+            aria-label={"username-input"}
           />
           <Button className="mt-3" onClick={(event) => onSubmit(event)}>
             Submit
