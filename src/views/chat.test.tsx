@@ -17,7 +17,7 @@ describe("sending a message", () => {
     const input = getByLabelText("message");
     userEvent.type(input, testMessage);
     // fireEvent.change(input, { target: { value: testMessage } });
-    fireEvent.keyPress(input, { key: "Enter", code: 13, charCode: 13 });
+    fireEvent.keyPress(input, { key: "Enter", keyCode: 13 });
 
     await waitFor(() => {
       expect(input).toHaveValue("");
