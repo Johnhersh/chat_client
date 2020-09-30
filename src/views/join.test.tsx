@@ -42,18 +42,27 @@ describe("Joining the chat", () => {
   });
 });
 
+import * as mockedRoutes from "../serverRoutes";
 describe("Inputting a new username", () => {
   const mockSetActiveUsername = jest.fn();
-  it("should call update state function on parent", () => {
+  it("should call update state function on parent", async () => {
+    const mockLogin = jest.spyOn(mockedRoutes, "logIn");
     const nameToInput = "newUserName";
     const { getByLabelText, unmount } = render(
       <Join activeUserName="" setActiveUserName={mockSetActiveUsername} />,
       { wrapper: BrowserRouter }
     );
+
     const input = getByLabelText("username-input");
     fireEvent.change(input, { target: { value: nameToInput } });
+
     expect(mockSetActiveUsername).toHaveBeenCalledWith(nameToInput);
-    unmount();
+
+    await act(async () => {
+      fireEvent.submit(input);
+    });
+    expect(mockLogin).toHaveBeenCalledWith("");
     // screen.debug();
+    unmount();
   });
 });
