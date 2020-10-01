@@ -1,9 +1,10 @@
 import React from "react";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
-
-import ChatView from "./chat.component";
 import { act } from "react-dom/test-utils";
 import userEvent from "@testing-library/user-event";
+import SocketMock from "socket.io-mock";
+
+import ChatView from "./chat.component";
 
 jest.mock("../serverRoutes.ts");
 
