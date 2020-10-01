@@ -7,10 +7,16 @@ import io from "socket.io-client";
 
 import ChatView from "./chat.component";
 
+let receiveMsgCallback: Function;
+
 jest.mock("../serverRoutes.ts");
 jest.mock("socket.io-client", () => {
   const emit = jest.fn();
-  const on = jest.fn();
+  const on = jest.fn((message, func) => {
+    if (message === "receive_message") {
+      receiveMsgCallback = func;
+    }
+  });
   const off = jest.fn();
   const close = jest.fn();
   const socket = { emit, on, off, close };
@@ -28,7 +34,7 @@ const setup = () => {
   };
 };
 
-/*describe("sending a message", () => {
+describe("sending a message", () => {
   it("should reset the input box when pressing Enter", async () => {
     const testMessage = "Test Message!";
     const { input, unmount } = setup();
@@ -62,7 +68,7 @@ const setup = () => {
 
     unmount();
   });
-});*/
+});
 
 describe("socket.io functionality", () => {
   it("should receive a 'join' message with room and username information ", async () => {
@@ -80,6 +86,27 @@ describe("socket.io functionality", () => {
       },
       expect.any(Function)
     );
+
+    unmount();
+  });
+
+  it("should add a message to the log when received", async () => {
+    const { unmount, getByText } = setup();
+    const incomingMessage = {
+      message: "Test message",
+      senderName: "admin",
+    };
+
+    await waitFor(() => {}); // This is needed because a useEffect has an async call that updates state
+
+    await waitFor(() => {
+      receiveMsgCallback(incomingMessage);
+    });
+
+    getByText("admin");
+    getByText("Test message 1");
+
+    // screen.debug();
 
     unmount();
   });
