@@ -1,7 +1,6 @@
 import { dbMessage } from "../serverRoutes";
 
 export async function getMessageLog() {
-  console.log(`In mocked getMessageLog`);
   const message1: dbMessage = {
     id: 1,
     chat_message: "Test message 1",
