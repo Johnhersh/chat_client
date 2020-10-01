@@ -1,9 +1,7 @@
 import React from "react";
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
-import { act } from "react-dom/test-utils";
+import { render, screen as _screen, fireEvent, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import io from "socket.io-client";
-// import SocketMock from "socket.io-mock";
 
 import ChatView from "./chat.component";
 
@@ -106,7 +104,7 @@ describe("socket.io functionality", () => {
     getByText("admin");
     getByText("Test message 1");
 
-    // screen.debug();
+    // _screen.debug();
 
     unmount();
   });
