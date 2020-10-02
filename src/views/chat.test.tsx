@@ -1,18 +1,38 @@
 import React from "react";
-import { render, screen as _screen, fireEvent, waitFor } from "@testing-library/react";
+import {
+  render,
+  screen as _screen,
+  fireEvent,
+  waitFor,
+  waitForElementToBeRemoved,
+  act,
+} from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import io from "socket.io-client";
 
 import ChatView from "./chat.component";
 
 let receiveMsgCallback: Function;
+let userJoinCallback: Function;
+let userLeftCallback: Function;
 
 jest.mock("../serverRoutes.ts");
 jest.mock("socket.io-client", () => {
   const emit = jest.fn();
   const on = jest.fn((message, func) => {
-    if (message === "receive_message") {
-      receiveMsgCallback = func;
+    switch (message) {
+      case "receive_message": {
+        receiveMsgCallback = func;
+        break;
+      }
+      case "user_joined": {
+        userJoinCallback = func;
+        break;
+      }
+      case "user_left": {
+        userLeftCallback = func;
+        break;
+      }
     }
   });
   const off = jest.fn();
@@ -62,8 +82,6 @@ describe("sending a message", () => {
       expect(input).toHaveValue("");
     });
 
-    // screen.debug();
-
     unmount();
   });
 });
@@ -104,7 +122,49 @@ describe("socket.io functionality", () => {
     getByText("admin");
     getByText("Test message 1");
 
-    // _screen.debug();
+    unmount();
+  });
+
+  it("should add a user to the userlist when a new user joins, and remove a user when he leaves", async () => {
+    const { unmount, getByText } = setup();
+    const newUser = "testUser2";
+
+    await waitFor(() => {}); // This is needed because a useEffect has an async call that updates state
+
+    await waitFor(() => {
+      userJoinCallback(newUser);
+    });
+
+    expect(getByText(newUser).parentElement?.parentElement).toHaveClass("activeUserListContainer");
+
+    await act(async () => {
+      userJoinCallback(newUser + "3");
+    });
+    // await waitForElementToBeRemoved(() => _screen.queryByText(newUser));
+    // await act(async () => {
+    //   // await waitFor(() => {
+    //   //   userLeftCallback(newUser);
+    //   // });
+    //   userLeftCallback(newUser);
+    // });
+
+    await waitFor(() => {
+      userLeftCallback(newUser);
+    });
+
+    // await waitFor(() => {
+    //   expect(getByText(newUser)).toBeNull();
+    // });
+
+    await waitFor(() => {
+      expect(_screen.queryByText(newUser)).not.toBeInTheDocument(); // query returns null, so it's good for checking if something is missing
+    });
+
+    // expect(_screen.queryByText(newUser)).not.toBeInTheDocument(); // query returns null, so it's good for checking if something is missing
+
+    // await waitFor(() => {
+    //   _screen.debug();
+    // });
 
     unmount();
   });
