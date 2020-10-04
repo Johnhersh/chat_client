@@ -13,9 +13,17 @@ let receiveMsgCallback: Function;
 let userJoinCallback: Function;
 let userLeftCallback: Function;
 let disconnectCallback: Function;
+let selfJoinCallback: Function;
 
 jest.mock("socket.io-client", () => {
-  const emit = jest.fn();
+  const emit = jest.fn((event, params, func) => {
+    switch (event) {
+      case "join": {
+        selfJoinCallback = func;
+        break;
+      }
+    }
+  });
   const on = jest.fn((message, func) => {
     switch (message) {
       case "receive_message": {
@@ -43,12 +51,14 @@ jest.mock("socket.io-client", () => {
 });
 
 const setup = () => {
-  const utils = render(<ChatView activeUserName="nameAvailable" />, { wrapper: BrowserRouter });
+  const activeUser = "nameAvailable";
+  const utils = render(<ChatView activeUserName={activeUser} />, { wrapper: BrowserRouter });
   const input = utils.getByLabelText("message");
   const sendButton = utils.getByText("Send");
   return {
     input,
     sendButton,
+    activeUser,
     ...utils,
   };
 };
@@ -165,6 +175,18 @@ describe("socket.io functionality", () => {
     // _screen.debug();
 
     expect(queryByText("Redirecting")).not.toBeNull();
+    unmount();
+  });
+
+  it("should add own's name to the active users list", async () => {
+    const { unmount, activeUser } = setup();
+
+    await waitFor(() => {}); // This is needed because a useEffect has an async call that updates state
+
+    await waitFor(() => {
+      selfJoinCallback();
+    });
+
     unmount();
   });
 });

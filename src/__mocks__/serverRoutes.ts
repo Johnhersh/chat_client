@@ -24,5 +24,6 @@ export async function logIn(newUserName: string) {
 }
 
 export async function getActiveUsers() {
-  return Promise.resolve();
+  const users = ["user1", "user2"];
+  return Promise.resolve(users);
 }

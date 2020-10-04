@@ -67,7 +67,7 @@ const ChatView: FunctionComponent<ChatProps> = ({ activeUserName }) => {
 
     socket.on("disconnect", (reason: string) => {
       if (reason === "transport close") {
-        console.log("Server shut down");
+        // console.log("Server shut down");
         setShouldDisconnect(true);
       }
     });
