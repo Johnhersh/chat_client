@@ -1,22 +1,19 @@
 import React from "react";
-import {
-  render,
-  screen as _screen,
-  fireEvent,
-  waitFor,
-  waitForElementToBeRemoved,
-  act,
-} from "@testing-library/react";
+import { render, screen as _screen, fireEvent, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import io from "socket.io-client";
+import { BrowserRouter } from "react-router-dom";
+// import { mocked } from "ts-jest/utils";
 
 import ChatView from "./chat.component";
+
+jest.mock("../serverRoutes.ts");
 
 let receiveMsgCallback: Function;
 let userJoinCallback: Function;
 let userLeftCallback: Function;
+let disconnectCallback: Function;
 
-jest.mock("../serverRoutes.ts");
 jest.mock("socket.io-client", () => {
   const emit = jest.fn();
   const on = jest.fn((message, func) => {
@@ -33,6 +30,10 @@ jest.mock("socket.io-client", () => {
         userLeftCallback = func;
         break;
       }
+      case "disconnect": {
+        disconnectCallback = func;
+        break;
+      }
     }
   });
   const off = jest.fn();
@@ -42,7 +43,7 @@ jest.mock("socket.io-client", () => {
 });
 
 const setup = () => {
-  const utils = render(<ChatView activeUserName="nameAvailable" />);
+  const utils = render(<ChatView activeUserName="nameAvailable" />, { wrapper: BrowserRouter });
   const input = utils.getByLabelText("message");
   const sendButton = utils.getByText("Send");
   return {
@@ -87,10 +88,15 @@ describe("sending a message", () => {
 });
 
 describe("socket.io functionality", () => {
+  beforeEach(() => {
+    jest.resetModules();
+    jest.clearAllMocks();
+  });
+
   it("should receive a 'join' message with room and username information ", async () => {
-    const { unmount } = setup();
     const ENDPOINT = "http://localhost:3001";
     const mockSocket = io(ENDPOINT);
+    const { unmount } = setup();
 
     await waitFor(() => {}); // This is needed because a useEffect has an async call that updates state
 
@@ -137,35 +143,28 @@ describe("socket.io functionality", () => {
 
     expect(getByText(newUser).parentElement?.parentElement).toHaveClass("activeUserListContainer");
 
-    await act(async () => {
-      userJoinCallback(newUser + "3");
-    });
-    // await waitForElementToBeRemoved(() => _screen.queryByText(newUser));
-    // await act(async () => {
-    //   // await waitFor(() => {
-    //   //   userLeftCallback(newUser);
-    //   // });
-    //   userLeftCallback(newUser);
-    // });
-
     await waitFor(() => {
       userLeftCallback(newUser);
     });
 
-    // await waitFor(() => {
-    //   expect(getByText(newUser)).toBeNull();
-    // });
+    unmount();
+  });
+
+  it("should redirect if connection is lost", async () => {
+    const { unmount, queryByText } = setup();
+    const reason = "transport close";
+
+    await waitFor(() => {}); // This is needed because a useEffect has an async call that updates state
 
     await waitFor(() => {
-      expect(_screen.queryByText(newUser)).not.toBeInTheDocument(); // query returns null, so it's good for checking if something is missing
+      disconnectCallback(reason);
     });
 
-    // expect(_screen.queryByText(newUser)).not.toBeInTheDocument(); // query returns null, so it's good for checking if something is missing
+    await waitFor(() => {});
 
-    // await waitFor(() => {
-    //   _screen.debug();
-    // });
+    // _screen.debug();
 
+    expect(queryByText("Redirecting")).not.toBeNull();
     unmount();
   });
 });

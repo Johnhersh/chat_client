@@ -114,10 +114,16 @@ const ChatView: FunctionComponent<ChatProps> = ({ activeUserName }) => {
     setMessage(event.currentTarget.value);
   }
 
+  if (shouldDisconnect || activeUserName === "")
+    return (
+      <div>
+        Redirecting
+        <Redirect to="/" />
+      </div>
+    );
+
   return (
     <div className="chatViewOuterContainer">
-      {shouldDisconnect ? <Redirect to="/" /> : null}
-      {activeUserName === "" ? <Redirect to="/" /> : null}
       <div className="chatViewInnerContainer">
         <div className="messagesContainer">
           <MessageLog activeUserName={activeUserName} messages={messageLog} />
