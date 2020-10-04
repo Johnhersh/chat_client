@@ -16,7 +16,7 @@ let disconnectCallback: Function;
 let selfJoinCallback: Function;
 
 jest.mock("socket.io-client", () => {
-  const emit = jest.fn((event, params, func) => {
+  const emit = jest.fn((event, _params, func) => {
     switch (event) {
       case "join": {
         selfJoinCallback = func;
@@ -178,14 +178,19 @@ describe("socket.io functionality", () => {
     unmount();
   });
 
-  it("should add own's name to the active users list", async () => {
-    const { unmount, activeUser } = setup();
+  it("should have existing users in the active users list", async () => {
+    const { unmount, getByText } = setup();
 
     await waitFor(() => {}); // This is needed because a useEffect has an async call that updates state
 
     await waitFor(() => {
       selfJoinCallback();
     });
+
+    expect(getByText("user1").parentElement?.parentElement).toHaveClass("activeUserListContainer");
+    expect(getByText("user2").parentElement?.parentElement).toHaveClass("activeUserListContainer");
+
+    // _screen.debug();
 
     unmount();
   });
