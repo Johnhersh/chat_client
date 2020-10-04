@@ -35,6 +35,14 @@
     "test-coverage": "react-scripts test --coverage --watchAll --env=jest-environment-jsdom-sixteen",
     "eject": "react-scripts eject"
   },
+  "jest": {
+    "collectCoverageFrom": [
+      "**/*.{ts,tsx}",
+      "!src/types/*",
+      "!src/{serviceWorker,react-app-env.d}.ts",
+      "!src/index.tsx"
+    ]
+  },
   "eslintConfig": {
     "extends": "react-app"
   },
