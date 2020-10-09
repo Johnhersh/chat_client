@@ -15,23 +15,29 @@ type FormInputEvent = React.MouseEvent<HTMLElement, MouseEvent> | React.FormEven
 
 const Join: FunctionComponent<JoinProps> = ({ activeUserName, setActiveUserName }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [isUsernameTaken, setIsUsernameTaken] = useState(false);
+  const [isLoginError, setIsLoginError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("Username is being used!");
   const tooltipTarget = useRef(null);
 
   function onUserFieldChange(event: React.ChangeEvent<HTMLInputElement>) {
     setActiveUserName(event.currentTarget.value);
-    setIsUsernameTaken(false);
+    setIsLoginError(false);
   }
 
   function onSubmit(event: FormInputEvent) {
     event.preventDefault();
-    logIn(activeUserName).then((nameIsAvailable: boolean) => {
-      if (nameIsAvailable) {
-        setIsLoggedIn(true);
-      } else {
-        setIsUsernameTaken(true);
-      }
-    });
+    logIn(activeUserName)
+      .then((nameIsAvailable: boolean) => {
+        if (nameIsAvailable) {
+          setIsLoggedIn(true);
+        } else {
+          setIsLoginError(true);
+        }
+      })
+      .catch(() => {
+        setIsLoginError(true);
+        setErrorMessage("Server error! Please try again");
+      });
   }
 
   if (isLoggedIn)
@@ -60,10 +66,10 @@ const Join: FunctionComponent<JoinProps> = ({ activeUserName, setActiveUserName 
           <Button className="mt-3" onClick={(event) => onSubmit(event)}>
             Submit
           </Button>
-          <Overlay target={tooltipTarget.current} show={isUsernameTaken} placement="top">
+          <Overlay target={tooltipTarget.current} show={isLoginError} placement="top">
             {(props) => (
               <Tooltip id="overlay-username" {...props}>
-                Username is being used!
+                {errorMessage}
               </Tooltip>
             )}
           </Overlay>

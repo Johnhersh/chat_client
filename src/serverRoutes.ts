@@ -35,8 +35,6 @@ export async function logIn(newUserName: string): Promise<loginResult> {
       console.log(PathReporter.report(result));
       return Promise.reject(response.data);
     }
-
-  // return response.data;
 }
 
 export async function getActiveUsers() {
