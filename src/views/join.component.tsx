@@ -44,7 +44,7 @@ const Join: FunctionComponent<JoinProps> = ({ activeUserName, setActiveUserName 
     return (
       <div>
         Redirecting
-        <Redirect to="/chat" />
+        <Redirect push={false} to="/chat" />
       </div>
     );
 
