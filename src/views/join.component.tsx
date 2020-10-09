@@ -25,8 +25,8 @@ const Join: FunctionComponent<JoinProps> = ({ activeUserName, setActiveUserName 
 
   function onSubmit(event: FormInputEvent) {
     event.preventDefault();
-    logIn(activeUserName).then((nameAvailable: boolean) => {
-      if (nameAvailable) {
+    logIn(activeUserName).then((nameIsAvailable: boolean) => {
+      if (nameIsAvailable) {
         setIsLoggedIn(true);
       } else {
         setIsUsernameTaken(true);
