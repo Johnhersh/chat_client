@@ -5,16 +5,16 @@ import Overlay from "react-bootstrap/Overlay";
 import Tooltip from "react-bootstrap/Tooltip";
 import { Redirect } from "react-router-dom";
 import { logIn } from "../serverRoutes";
-import {UsernameContext} from "../Context";
+import { UsernameContext } from "../Context";
 
 type FormInputEvent = React.MouseEvent<HTMLElement, MouseEvent> | React.FormEvent<HTMLElement>;
 
-const Join = () => {
+function Join() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isLoginError, setIsLoginError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("Username is being used!");
   const tooltipTarget = useRef(null);
-  const {activeUsername, setActiveUsername} = useContext(UsernameContext);
+  const { activeUsername, setActiveUsername } = useContext(UsernameContext);
 
   function onUserFieldChange(event: React.ChangeEvent<HTMLInputElement>) {
     setActiveUsername(event.currentTarget.value);
@@ -75,6 +75,6 @@ const Join = () => {
       </Form>
     </div>
   );
-};
+}
 
 export default Join;
