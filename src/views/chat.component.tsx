@@ -46,7 +46,7 @@ const ChatView: FunctionComponent<ChatProps> = ({ activeUserName }) => {
   useEffect(() => {
     getMessageLog()
       .then((messageLog) => {
-        const incomingMessageLog: dbMessageLog = messageLog;
+        const incomingMessageLog: dbMessageLog = [...messageLog];
         const newMessageLog: message[] = [];
         incomingMessageLog.forEach((message) => {
           newMessageLog.push({ message: message.chat_message, from: message.from_user });
@@ -65,7 +65,7 @@ const ChatView: FunctionComponent<ChatProps> = ({ activeUserName }) => {
       socket.emit("join", { username: activeUserName, room: "general" }, () => {
         getActiveUsers()
           .then((activeUsers) => {
-            setActiveUsers(activeUsers);
+            setActiveUsers([...activeUsers]);
           })
           .catch(() => {
             console.error("Server error when trying to retrieve active users list!");
