@@ -4,7 +4,6 @@ import { isRight } from "fp-ts/lib/Either";
 import { PathReporter } from "io-ts/lib/PathReporter";
 
 const apiUrl = process.env.REACT_APP_SERVER_LOCATION;
-// export type dbMessage = { id: number; chat_message: string; from_user: string; time: string };
 
 const dbMessageLogValidatedType = t.array(
   t.interface({
