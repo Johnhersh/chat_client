@@ -1,5 +1,5 @@
 import axios from "axios";
-import * as t from "io-ts";
+import * as t from "io-ts"; // Using io-ts for validation of data coming from backend
 import { isRight } from "fp-ts/lib/Either";
 import { PathReporter } from "io-ts/lib/PathReporter";
 
