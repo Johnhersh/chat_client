@@ -18,7 +18,7 @@ function App() {
             <Join />
           </Route>
           <Route path="/chat" exact>
-            <ChatView activeUserName={username} />
+            <ChatView />
           </Route>
         </UsernameContext.Provider>
       </Router>

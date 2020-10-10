@@ -1,8 +1,9 @@
-import React, { useState, useEffect, FunctionComponent } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import InputGroup from "react-bootstrap/InputGroup";
 import FormControl from "react-bootstrap/FormControl";
 import Button from "react-bootstrap/Button";
 import ListGroup from "react-bootstrap/ListGroup";
+import { UsernameContext } from "../Context";
 import io from "socket.io-client";
 import { Redirect } from "react-router-dom";
 
@@ -14,21 +15,18 @@ import "./chat.styles.scss";
 const socketUrl = process.env.REACT_APP_SERVER_LOCATION || "http://localhost:3001";
 let socket: SocketIOClient.Socket;
 
-interface ChatProps {
-  activeUserName: string;
-}
-
 export type message = {
   message: string;
   from: string;
 };
 
-const ChatView: FunctionComponent<ChatProps> = ({ activeUserName }) => {
+function ChatView() {
   const [shouldDisconnect, setShouldDisconnect] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [messageLog, setMessageLog] = useState<Array<message>>([]);
   const [message, setMessage] = useState("");
   const [activeUsers, setActiveUsers] = useState<Array<string>>([]);
+  const { activeUsername } = useContext(UsernameContext);
 
   /** Initial websocket connection */
   useEffect(() => {
@@ -62,7 +60,7 @@ const ChatView: FunctionComponent<ChatProps> = ({ activeUserName }) => {
   /** Join the chat */
   useEffect(() => {
     if (!isLoggedIn) {
-      socket.emit("join", { username: activeUserName, room: "general" }, () => {
+      socket.emit("join", { username: activeUsername, room: "general" }, () => {
         getActiveUsers()
           .then((activeUsers) => {
             setActiveUsers([...activeUsers]);
@@ -81,7 +79,7 @@ const ChatView: FunctionComponent<ChatProps> = ({ activeUserName }) => {
         setShouldDisconnect(true);
       }
     });
-  }, [isLoggedIn, activeUserName]);
+  }, [isLoggedIn, activeUsername]);
 
   /** users join/leave the chat */
   useEffect(() => {
@@ -114,7 +112,7 @@ const ChatView: FunctionComponent<ChatProps> = ({ activeUserName }) => {
   /** Handle events from UI */
   function onSendMessage() {
     socket.emit("submit_message", message);
-    const newMessage: message = { message: message, from: activeUserName };
+    const newMessage: message = { message: message, from: activeUsername };
     const newMessageLog: message[] = [...messageLog, newMessage];
     setMessageLog(newMessageLog);
     setMessage("");
@@ -124,7 +122,7 @@ const ChatView: FunctionComponent<ChatProps> = ({ activeUserName }) => {
     setMessage(event.currentTarget.value);
   }
 
-  if (shouldDisconnect || activeUserName === "")
+  if (shouldDisconnect || activeUsername === "")
     return (
       <div>
         Redirecting
@@ -136,7 +134,7 @@ const ChatView: FunctionComponent<ChatProps> = ({ activeUserName }) => {
     <div className="chatViewOuterContainer">
       <div className="chatViewInnerContainer">
         <div className="messagesContainer">
-          <MessageLog activeUserName={activeUserName} messages={messageLog} />
+          <MessageLog activeUserName={activeUsername} messages={messageLog} />
         </div>
         <div className="activeUserListContainer">
           <ListGroup variant="flush">
@@ -146,8 +144,7 @@ const ChatView: FunctionComponent<ChatProps> = ({ activeUserName }) => {
                   key={activeUser + index}
                   variant="dark"
                   className="mb-1"
-                  style={{ backgroundColor: "#22252c", color: "#9c9da1" }}
-                >
+                  style={{ backgroundColor: "#22252c", color: "#9c9da1" }}>
                   {activeUser}
                 </ListGroup.Item>
               );
@@ -179,6 +176,6 @@ const ChatView: FunctionComponent<ChatProps> = ({ activeUserName }) => {
       </div>
     </div>
   );
-};
+}
 
 export default ChatView;
