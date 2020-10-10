@@ -1,32 +1,29 @@
-import React, { useState, useRef, FunctionComponent } from "react";
+import React, { useState, useRef, useContext } from "react";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import Overlay from "react-bootstrap/Overlay";
 import Tooltip from "react-bootstrap/Tooltip";
 import { Redirect } from "react-router-dom";
 import { logIn } from "../serverRoutes";
-
-interface JoinProps {
-  activeUserName: string;
-  setActiveUserName: React.Dispatch<React.SetStateAction<string>>;
-}
+import {UsernameContext} from "../Context";
 
 type FormInputEvent = React.MouseEvent<HTMLElement, MouseEvent> | React.FormEvent<HTMLElement>;
 
-const Join: FunctionComponent<JoinProps> = ({ activeUserName, setActiveUserName }) => {
+const Join = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isLoginError, setIsLoginError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("Username is being used!");
   const tooltipTarget = useRef(null);
+  const {activeUsername, setActiveUsername} = useContext(UsernameContext);
 
   function onUserFieldChange(event: React.ChangeEvent<HTMLInputElement>) {
-    setActiveUserName(event.currentTarget.value);
+    setActiveUsername(event.currentTarget.value);
     setIsLoginError(false);
   }
 
   function onSubmit(event: FormInputEvent) {
     event.preventDefault();
-    logIn(activeUserName)
+    logIn(activeUsername)
       .then((nameIsAvailable) => {
         if (nameIsAvailable) {
           setIsLoggedIn(true);
@@ -59,7 +56,7 @@ const Join: FunctionComponent<JoinProps> = ({ activeUserName, setActiveUserName 
           <Form.Control
             type="text"
             placeholder="Enter username"
-            value={activeUserName}
+            value={activeUsername}
             onChange={onUserFieldChange}
             ref={tooltipTarget}
             aria-label={"username-input"}
