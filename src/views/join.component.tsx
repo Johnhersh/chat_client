@@ -27,7 +27,7 @@ const Join: FunctionComponent<JoinProps> = ({ activeUserName, setActiveUserName 
   function onSubmit(event: FormInputEvent) {
     event.preventDefault();
     logIn(activeUserName)
-      .then((nameIsAvailable: boolean) => {
+      .then((nameIsAvailable) => {
         if (nameIsAvailable) {
           setIsLoggedIn(true);
         } else {
@@ -36,6 +36,7 @@ const Join: FunctionComponent<JoinProps> = ({ activeUserName, setActiveUserName 
       })
       .catch(() => {
         setIsLoginError(true);
+        console.error("Server error when trying to log in!");
         setErrorMessage("Server error! Please try again");
       });
   }
