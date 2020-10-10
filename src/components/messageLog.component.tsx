@@ -6,24 +6,17 @@ import "./messageLog.styles.scss";
 
 interface MessageLogProps {
   messages: message[];
-  activeUserName: string;
 }
 
-const MessageLog: FunctionComponent<MessageLogProps> = ({ messages, activeUserName }) => {
+const MessageLog: FunctionComponent<MessageLogProps> = ({ messages }) => {
   return (
     <div className="messageLog">
       <ScrollToBottom
         className="messagesOverflow noScrollBarContainer"
         behavior={"smooth"}
-        scrollViewClassName="noScrollBarContainer"
-      >
+        scrollViewClassName="noScrollBarContainer">
         {messages.map((message, i) => (
-          <Message
-            key={i}
-            from={message.from}
-            message={message.message}
-            activeUser={activeUserName}
-          />
+          <Message key={i} from={message.from} message={message.message} />
         ))}
       </ScrollToBottom>
     </div>

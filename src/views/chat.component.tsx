@@ -134,7 +134,7 @@ function ChatView() {
     <div className="chatViewOuterContainer">
       <div className="chatViewInnerContainer">
         <div className="messagesContainer">
-          <MessageLog activeUserName={activeUsername} messages={messageLog} />
+          <MessageLog messages={messageLog} />
         </div>
         <div className="activeUserListContainer">
           <ListGroup variant="flush">
