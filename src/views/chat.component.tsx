@@ -58,9 +58,14 @@ const ChatView: FunctionComponent<ChatProps> = ({ activeUserName }) => {
   useEffect(() => {
     if (!isLoggedIn) {
       socket.emit("join", { username: activeUserName, room: "general" }, () => {
-        getActiveUsers().then((activeUsers) => {
-          setActiveUsers(activeUsers);
-        });
+        getActiveUsers()
+          .then((activeUsers) => {
+            setActiveUsers(activeUsers);
+          })
+          .catch(() => {
+            console.error("Server error when trying to retrieve active users list!");
+            setShouldDisconnect(true);
+          });
         setIsLoggedIn(true);
       });
     }
