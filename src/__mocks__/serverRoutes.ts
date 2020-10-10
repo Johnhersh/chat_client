@@ -1,4 +1,5 @@
-import { dbMessage } from "../serverRoutes";
+import { dbMessageLog } from "../serverRoutes";
+type dbMessage = dbMessageLog[number];
 
 export async function getMessageLog() {
   const message1: dbMessage = {

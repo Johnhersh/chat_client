@@ -7,7 +7,7 @@ import io from "socket.io-client";
 import { Redirect } from "react-router-dom";
 
 import MessageLog from "../components/messageLog.component";
-import { dbMessage, getMessageLog, getActiveUsers } from "../serverRoutes";
+import { dbMessageLog, getMessageLog, getActiveUsers } from "../serverRoutes";
 
 import "./chat.styles.scss";
 
@@ -44,14 +44,19 @@ const ChatView: FunctionComponent<ChatProps> = ({ activeUserName }) => {
 
   /** Get message log */
   useEffect(() => {
-    getMessageLog().then((messageLog) => {
-      const incomingMessageLog: dbMessage[] = messageLog;
-      const newMessageLog: message[] = [];
-      incomingMessageLog.forEach((message) => {
-        newMessageLog.push({ message: message.chat_message, from: message.from_user });
+    getMessageLog()
+      .then((messageLog) => {
+        const incomingMessageLog: dbMessageLog = messageLog;
+        const newMessageLog: message[] = [];
+        incomingMessageLog.forEach((message) => {
+          newMessageLog.push({ message: message.chat_message, from: message.from_user });
+        });
+        setMessageLog(newMessageLog);
+      })
+      .catch(() => {
+        console.error("Server error when trying to retrieve message log");
+        setShouldDisconnect(true);
       });
-      setMessageLog(newMessageLog);
-    });
   }, []);
 
   /** Join the chat */
