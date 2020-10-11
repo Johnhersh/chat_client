@@ -122,6 +122,7 @@ function ChatView() {
     setMessage(event.currentTarget.value);
   }
 
+  /** Detect error cases and disconnects */
   if (shouldDisconnect || activeUsername === "")
     return (
       <div>
