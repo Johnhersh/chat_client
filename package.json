@@ -37,7 +37,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test --env=jest-environment-jsdom-sixteen",
     "test-coverage": "react-scripts test --coverage --watchAll --env=jest-environment-jsdom-sixteen",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "gen-types": "npx apollo schema:download --endpoint=http://localhost:3001/graphql graphql-schema.json && npx apollo codegen:generate --localSchemaFile=graphql-schema.json --target=typescript --includes=src/**/*.tsx --tagName=gql --addTypename --globalTypesFile=src/types/graphql-global-types.ts ./src/types --outputFlat"
   },
   "jest": {
     "collectCoverageFrom": [
