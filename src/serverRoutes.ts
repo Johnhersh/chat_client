@@ -21,18 +21,6 @@ type loginResult = t.TypeOf<typeof loginValidatedType>;
 const activeUsersListValidatedType = t.array(t.string);
 type activeUserList = t.TypeOf<typeof activeUsersListValidatedType>;
 
-export async function getMessageLog(): Promise<Readonly<dbMessageLog>> {
-  const response = await axios.get(`${apiUrl}/getMessageLog`);
-  const validatedResult = dbMessageLogValidatedType.decode(response.data);
-
-  if (isRight(validatedResult)) {
-    return Promise.resolve(response.data);
-  } else {
-    console.log(PathReporter.report(validatedResult));
-    return Promise.reject(response.data);
-  }
-}
-
 export async function logIn(newUserName: string): Promise<Readonly<loginResult>> {
   const response = await axios.post(`${apiUrl}/login`, { newUser: newUserName });
   const validatedResult = loginValidatedType.decode(response.data);

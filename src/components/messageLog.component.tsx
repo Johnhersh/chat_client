@@ -26,8 +26,6 @@ const MessageLog: FunctionComponent<MessageLogProps> = ({ messages }) => {
   if (loading) return <p>Loading...</p>;
   if (error || data === undefined) return <p>Something is wrong</p>;
 
-  console.log(data);
-
   return (
     <div className="messageLog">
       <ScrollToBottom
@@ -37,9 +35,7 @@ const MessageLog: FunctionComponent<MessageLogProps> = ({ messages }) => {
         {loading ? (
           <p>Loading...</p>
         ) : (
-          data.messages.map((message, i) => (
-            <Message key={i} from={message.chat_message} message={message.chat_message} />
-          ))
+          data.messages.map((message, i) => <Message key={i} from={message.from_user} message={message.chat_message} />)
         )}
         {messages.map((message, i) => (
           <Message key={i} from={message.from} message={message.message} />
