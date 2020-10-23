@@ -14,6 +14,7 @@ function Join() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isLoginError, setIsLoginError] = useState(false);
   const [isLoggingIn, setIsLoggingIn] = useState(false);
+  const [isServerBootingUp, setIsServerBooting] = useState(false);
   const [errorMessage, setErrorMessage] = useState("Username is being used!");
   const tooltipTarget = useRef(null);
   const { activeUsername, setActiveUsername } = useContext(UsernameContext);
@@ -33,6 +34,7 @@ function Join() {
         } else {
           setIsLoginError(true);
           setIsLoggingIn(false);
+          setIsServerBooting(false);
         }
       })
       .catch(() => {
@@ -40,13 +42,15 @@ function Join() {
         console.error("Server error when trying to log in!");
         setErrorMessage("Server error! Please try again");
         setIsLoggingIn(false);
+        setIsServerBooting(false);
       });
   }
 
   function showLoadingSpinner() {
     setIsLoggingIn(true);
     setTimeout(() => {
-      console.log("Server is taking too long");
+      console.log("Server is booting up");
+      setIsServerBooting(true);
     }, 5000);
   }
 
@@ -87,7 +91,7 @@ function Join() {
       </Form>
       <div className="loadingContainer">
         <div className="icon-spinner" style={{ opacity: isLoggingIn ? 1 : 0 }} />
-        <div className="serverWarning" style={{ opacity: isLoggingIn ? 1 : 0 }}>
+        <div className="serverWarning" style={{ opacity: isServerBootingUp ? 1 : 0 }}>
           <p>Server is spinning up after being inactive.</p>
           <p>This will take a few seconds.</p>
         </div>
