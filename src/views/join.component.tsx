@@ -14,6 +14,7 @@ function Join() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isLoginError, setIsLoginError] = useState(false);
   const [isLoggingIn, setIsLoggingIn] = useState(false);
+  let serverBootupTimer: NodeJS.Timeout;
   const [isServerBootingUp, setIsServerBooting] = useState(false);
   const [errorMessage, setErrorMessage] = useState("Username is being used!");
   const tooltipTarget = useRef(null);
@@ -34,6 +35,7 @@ function Join() {
         } else {
           setIsLoginError(true);
           setIsLoggingIn(false);
+          clearTimeout(serverBootupTimer);
           setIsServerBooting(false);
         }
       })
@@ -42,13 +44,14 @@ function Join() {
         console.error("Server error when trying to log in!");
         setErrorMessage("Server error! Please try again");
         setIsLoggingIn(false);
+        clearTimeout(serverBootupTimer);
         setIsServerBooting(false);
       });
   }
 
   function showLoadingSpinner() {
     setIsLoggingIn(true);
-    setTimeout(() => {
+    serverBootupTimer = setTimeout(() => {
       console.log("Server is booting up");
       setIsServerBooting(true);
     }, 5000);
