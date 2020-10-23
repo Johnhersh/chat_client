@@ -6,23 +6,28 @@ import Tooltip from "react-bootstrap/Tooltip";
 import { Redirect } from "react-router-dom";
 import { logIn } from "../serverRoutes";
 import { UsernameContext } from "../Context";
+import "./join.styles.scss";
 
 type FormInputEvent = React.MouseEvent<HTMLElement, MouseEvent> | React.FormEvent<HTMLElement>;
 
 function Join() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isLoginError, setIsLoginError] = useState(false);
+  const [isLoggingIn, setIsLoggingIn] = useState(false);
+  console.log(isLoggingIn); //Delete me
   const [errorMessage, setErrorMessage] = useState("Username is being used!");
   const tooltipTarget = useRef(null);
   const { activeUsername, setActiveUsername } = useContext(UsernameContext);
 
   function onUserFieldChange(event: React.ChangeEvent<HTMLInputElement>) {
+    setIsLoggingIn(false);
     setActiveUsername(event.currentTarget.value);
     setIsLoginError(false);
   }
 
   function onSubmit(event: FormInputEvent) {
     event.preventDefault();
+    setIsLoggingIn(true);
     logIn(activeUsername)
       .then((nameIsAvailable) => {
         if (nameIsAvailable) {
@@ -72,6 +77,11 @@ function Join() {
             )}
           </Overlay>
         </Form.Group>
+
+        {/* <div className={`loadingContainer ${isLoggingIn === true ? "show" : ""}`}> */}
+        <div className={"loadingContainer"} style={{ opacity: isLoggingIn ? 1 : 0 }}>
+          <div className="icon-spinner"></div>
+        </div>
       </Form>
     </div>
   );

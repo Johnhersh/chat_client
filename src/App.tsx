@@ -6,6 +6,7 @@ import Join from "./views/join.component";
 import { UsernameContext } from "./Context";
 import "./App.scss";
 import "./global.styles.scss";
+import "./icons.scss";
 
 function App() {
   const [username, setUsername] = useState("");
