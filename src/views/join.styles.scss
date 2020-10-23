@@ -1,3 +1,21 @@
-.loadingContainer {
-  transition: opacity 1.5s, visibility 0.3s;
+.joinOuterContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.loginFormContainer {
+  max-width: 15em;
+}
+
+.serverWarning {
+  color: white;
+  margin-top: 1em;
+  transition-delay: 3s;
+  transition: opacity 0.5s, visibility 0.3s;
+}
+
+.icon-spinner {
+  transition: opacity 0.5s, visibility 0.3s;
 }

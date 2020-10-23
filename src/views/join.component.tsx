@@ -14,33 +14,40 @@ function Join() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isLoginError, setIsLoginError] = useState(false);
   const [isLoggingIn, setIsLoggingIn] = useState(false);
-  console.log(isLoggingIn); //Delete me
   const [errorMessage, setErrorMessage] = useState("Username is being used!");
   const tooltipTarget = useRef(null);
   const { activeUsername, setActiveUsername } = useContext(UsernameContext);
 
   function onUserFieldChange(event: React.ChangeEvent<HTMLInputElement>) {
-    setIsLoggingIn(false);
     setActiveUsername(event.currentTarget.value);
     setIsLoginError(false);
   }
 
   function onSubmit(event: FormInputEvent) {
     event.preventDefault();
-    setIsLoggingIn(true);
+    showLoadingSpinner();
     logIn(activeUsername)
       .then((nameIsAvailable) => {
         if (nameIsAvailable) {
           setIsLoggedIn(true);
         } else {
           setIsLoginError(true);
+          setIsLoggingIn(false);
         }
       })
       .catch(() => {
         setIsLoginError(true);
         console.error("Server error when trying to log in!");
         setErrorMessage("Server error! Please try again");
+        setIsLoggingIn(false);
       });
+  }
+
+  function showLoadingSpinner() {
+    setIsLoggingIn(true);
+    setTimeout(() => {
+      console.log("Server is taking too long");
+    }, 5000);
   }
 
   if (isLoggedIn)
@@ -53,7 +60,7 @@ function Join() {
 
   return (
     <div className="joinOuterContainer">
-      <Form onSubmit={(event) => onSubmit(event)}>
+      <Form className="loginFormContainer" onSubmit={(event) => onSubmit(event)}>
         <Form.Group controlId="joinInfo">
           <Form.Label className="mb-3 text-white" color="white">
             User name
@@ -77,12 +84,14 @@ function Join() {
             )}
           </Overlay>
         </Form.Group>
-
-        {/* <div className={`loadingContainer ${isLoggingIn === true ? "show" : ""}`}> */}
-        <div className={"loadingContainer"} style={{ opacity: isLoggingIn ? 1 : 0 }}>
-          <div className="icon-spinner"></div>
-        </div>
       </Form>
+      <div className="loadingContainer">
+        <div className="icon-spinner" style={{ opacity: isLoggingIn ? 1 : 0 }} />
+        <div className="serverWarning" style={{ opacity: isLoggingIn ? 1 : 0 }}>
+          <p>Server is spinning up after being inactive.</p>
+          <p>This will take a few seconds.</p>
+        </div>
+      </div>
     </div>
   );
 }
