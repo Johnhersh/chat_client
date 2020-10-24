@@ -1,5 +1,5 @@
 import React from "react";
-import { render, screen as _screen, fireEvent, waitFor } from "@testing-library/react";
+import { render, fireEvent, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import io from "socket.io-client";
 import { BrowserRouter } from "react-router-dom";
@@ -52,7 +52,7 @@ jest.mock("socket.io-client", () => {
 
 const setup = () => {
   const activeUser = "nameAvailable";
-  const utils = render(<ChatView activeUserName={activeUser} />, { wrapper: BrowserRouter });
+  const utils = render(<ChatView />, { wrapper: BrowserRouter });
   const input = utils.getByLabelText("message");
   const sendButton = utils.getByText("Send");
   return {
