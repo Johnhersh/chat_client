@@ -1,8 +1,4 @@
 import React, { useState, useEffect, useContext } from "react";
-import InputGroup from "react-bootstrap/InputGroup";
-import FormControl from "react-bootstrap/FormControl";
-import Button from "react-bootstrap/Button";
-import ListGroup from "react-bootstrap/ListGroup";
 import { UsernameContext } from "../Context";
 import io from "socket.io-client";
 import { Redirect } from "react-router-dom";
@@ -121,42 +117,39 @@ function ChatView() {
           <MessageLog messages={messageLog} />
         </div>
         <div className="activeUserListContainer">
-          <ListGroup variant="flush">
+          <ul>
             {activeUsers.map((activeUser, index) => {
               return (
-                <ListGroup.Item
+                <li
                   key={activeUser + index}
-                  variant="dark"
-                  className="mb-1"
+                  className="activeUserItem"
                   style={{ backgroundColor: "#22252c", color: "#9c9da1" }}>
                   {activeUser}
-                </ListGroup.Item>
+                </li>
               );
             })}
-          </ListGroup>
+          </ul>
         </div>
       </div>
       <div className="inputContainer">
-        <InputGroup className="mb-0">
-          <FormControl
-            className="bg-dark text-light"
-            placeholder="message"
-            aria-label="message"
-            aria-describedby="basic-addon2"
-            onChange={onMessageChange}
-            value={message}
-            onKeyPress={(event: any) => {
-              if (event.key === "Enter") {
-                onSendMessage();
-              }
-            }}
-          />
-          <InputGroup.Append>
-            <Button className="rounded-bottom-right" variant="primary" onClick={onSendMessage}>
-              Send
-            </Button>
-          </InputGroup.Append>
-        </InputGroup>
+        <input
+          type="text"
+          name="inputMessage"
+          id="inputMessage"
+          placeholder="message"
+          onChange={onMessageChange}
+          value={message}
+          className="input-textfield"
+          required
+          onKeyPress={(event: any) => {
+            if (event.key === "Enter") {
+              onSendMessage();
+            }
+          }}
+        />
+        <button type="submit" onClick={onSendMessage}>
+          Send
+        </button>
       </div>
     </div>
   );

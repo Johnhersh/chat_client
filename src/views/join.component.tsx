@@ -1,8 +1,4 @@
-import React, { useState, useRef, useContext } from "react";
-import Form from "react-bootstrap/Form";
-import Button from "react-bootstrap/Button";
-import Overlay from "react-bootstrap/Overlay";
-import Tooltip from "react-bootstrap/Tooltip";
+import React, { useState, useContext } from "react";
 import { Redirect } from "react-router-dom";
 import { logIn } from "../serverRoutes";
 import { UsernameContext } from "../Context";
@@ -17,7 +13,6 @@ function Join() {
   let serverBootupTimer: NodeJS.Timeout;
   const [isServerBootingUp, setIsServerBooting] = useState(false);
   const [errorMessage, setErrorMessage] = useState("Username is being used!");
-  const tooltipTarget = useRef(null);
   const { activeUsername, setActiveUsername } = useContext(UsernameContext);
 
   function onUserFieldChange(event: React.ChangeEvent<HTMLInputElement>) {
@@ -85,31 +80,6 @@ function Join() {
         </label>
         <button type="submit">Submit</button>
       </form>
-      <Form className="loginFormContainer" onSubmit={(event) => onSubmit(event)}>
-        <Form.Group controlId="joinInfo">
-          <Form.Label className="mb-3 text-white" color="white">
-            User name
-          </Form.Label>
-          <Form.Control
-            type="text"
-            placeholder="Enter username"
-            value={activeUsername}
-            onChange={onUserFieldChange}
-            ref={tooltipTarget}
-            aria-label={"username-input"}
-          />
-          <Button className="mt-3" onClick={(event) => onSubmit(event)}>
-            Submit
-          </Button>
-          <Overlay target={tooltipTarget.current} show={isLoginError} placement="top">
-            {(props) => (
-              <Tooltip id="overlay-username" {...props}>
-                {errorMessage}
-              </Tooltip>
-            )}
-          </Overlay>
-        </Form.Group>
-      </Form>
       <div className="loadingContainer">
         <div className="icon-spinner" style={{ opacity: isLoggingIn ? 1 : 0 }} />
         <div className="serverWarning" style={{ opacity: isServerBootingUp ? 1 : 0 }}>

@@ -28,6 +28,7 @@
 
 .icon-spinner {
   transition: opacity 0.5s, visibility 0.3s;
+  pointer-events: none; // So it doesn't hide the Submit button
 }
 
 .input-textfield {
