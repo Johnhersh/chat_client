@@ -67,6 +67,9 @@ function Join() {
 
   return (
     <div className="joinOuterContainer">
+      <div className="usernameTakenWarning" style={{ opacity: isLoginError ? 1 : 0 }}>
+        <p>{errorMessage}</p>
+      </div>
       <form className="loginFormContainer" onSubmit={(event) => onSubmit(event)}>
         <input
           type="text"
