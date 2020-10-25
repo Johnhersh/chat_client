@@ -67,6 +67,21 @@ function Join() {
 
   return (
     <div className="joinOuterContainer">
+      <form className="loginFormContainer" onSubmit={(event) => onSubmit(event)}>
+        <input
+          type="text"
+          name="username"
+          id="username"
+          value={activeUsername}
+          onChange={onUserFieldChange}
+          className="input-textfield"
+          required
+        />
+        <label color="white" htmlFor="username" className="input-placeholder">
+          User name
+        </label>
+        <button type="submit">Submit</button>
+      </form>
       <Form className="loginFormContainer" onSubmit={(event) => onSubmit(event)}>
         <Form.Group controlId="joinInfo">
           <Form.Label className="mb-3 text-white" color="white">

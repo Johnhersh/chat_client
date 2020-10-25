@@ -7,6 +7,10 @@
 
 .loginFormContainer {
   max-width: 15em;
+  position: relative; // Needed so the input-placeholder has a location to display off of
+  display: flex;
+  flex-direction: column;
+  background-color: green;
 }
 
 .serverWarning {
@@ -18,4 +22,22 @@
 
 .icon-spinner {
   transition: opacity 0.5s, visibility 0.3s;
+}
+
+.input-textfield {
+  outline: none;
+}
+
+.input-placeholder {
+  position: absolute;
+  color: #777;
+  top: 2px;
+  left: 5px;
+  transition: all 150ms;
+}
+
+.input-textfield:focus + .input-placeholder,
+.input-textfield:valid + .input-placeholder {
+  color: #fff;
+  transform: translate3d(-5px, -100%, 0) scale(0.8);
 }
