@@ -78,7 +78,9 @@ function Join() {
         <label color="white" htmlFor="username" className="input-placeholder">
           User name
         </label>
-        <button type="submit">Submit</button>
+        <button className="submit-button" type="submit">
+          Submit
+        </button>
       </form>
       <div className="loadingContainer">
         <div className="icon-spinner" style={{ opacity: isLoggingIn ? 1 : 0 }} />
