@@ -117,13 +117,10 @@ function ChatView() {
           <MessageLog messages={messageLog} />
         </div>
         <div className="activeUserListContainer">
-          <ul>
+          <ul className="activeUsersList">
             {activeUsers.map((activeUser, index) => {
               return (
-                <li
-                  key={activeUser + index}
-                  className="activeUserItem"
-                  style={{ backgroundColor: "#22252c", color: "#9c9da1" }}>
+                <li key={activeUser + index} className="activeUserItem">
                   {activeUser}
                 </li>
               );
@@ -139,7 +136,8 @@ function ChatView() {
           placeholder="message"
           onChange={onMessageChange}
           value={message}
-          className="input-textfield"
+          className="input-messageField"
+          autoComplete="off"
           required
           onKeyPress={(event: any) => {
             if (event.key === "Enter") {
@@ -147,7 +145,7 @@ function ChatView() {
             }
           }}
         />
-        <button type="submit" onClick={onSendMessage}>
+        <button className="input-sendButton" type="submit" onClick={onSendMessage}>
           Send
         </button>
       </div>
