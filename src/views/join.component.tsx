@@ -26,6 +26,7 @@ function Join() {
     logIn(activeUsername)
       .then((nameIsAvailable) => {
         if (nameIsAvailable) {
+          clearTimeout(serverBootupTimer);
           setIsLoggedIn(true);
         } else {
           setIsLoginError(true);
