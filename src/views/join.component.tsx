@@ -12,7 +12,7 @@ function Join() {
   const [isLoggingIn, setIsLoggingIn] = useState(false);
   let serverBootupTimer: NodeJS.Timeout;
   const [isServerBootingUp, setIsServerBooting] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("Username is being used!");
+  const [errorMessage, setErrorMessage] = useState("Username is taken! Please try a different name");
   const { activeUsername, setActiveUsername } = useContext(UsernameContext);
 
   function onUserFieldChange(event: React.ChangeEvent<HTMLInputElement>) {

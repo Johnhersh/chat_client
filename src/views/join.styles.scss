@@ -17,9 +17,10 @@
 }
 
 .usernameTakenWarning {
-  color: darkred;
+  color: brown;
   transition-delay: 3s;
   transition: opacity 0.5s, visibility 0.3s;
+  margin-bottom: 15px;
 }
 
 .serverWarning {
@@ -27,6 +28,10 @@
   margin-top: 1em;
   transition-delay: 3s;
   transition: opacity 0.5s, visibility 0.3s;
+}
+
+.loadingContainer {
+  margin-top: 15px;
 }
 
 .icon-spinner {
